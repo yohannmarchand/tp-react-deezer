@@ -1,8 +1,8 @@
 import data from './data.json'
-import {useCallback, useEffect, useState} from "react";
-import {Redirect, useParams} from "react-router-dom";
-import axios from "axios";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import TrackList from "./TrackList";
+import axios from "axios";
 
 function ViewDetail() {
   const params = useParams()
@@ -10,10 +10,17 @@ function ViewDetail() {
   const [albumTrackList, setAlbumTrackList ] = useState([])
 
   useEffect(() => {
-      axios.get(`https://api.deezer.com/album/${track.album.id}/tracks`).then(({data}) => {
-        setAlbumTrackList(data.data)
-      })
+    axios.get(`https://api.deezer.com/album/${track.album.id}/tracks`).then(({data}) => {
+      setAlbumTrackList(data.data)
     })
+  }, [track])
+
+  useEffect(() => {
+    axios.get(`https://api.deezer.com/track/${params.id}`).then(({data}) => {
+      console.log(data)
+      setTrack(data)
+    })
+  }, [params])
 
   return (
     <div className="py-10 mx-auto px-5">
@@ -34,10 +41,9 @@ function ViewDetail() {
         </div>
       </div>
 
-      { albumTrackList && <TrackList albumCover={track.album.cover_small} tracks={ albumTrackList }/> }
-    </div>
-  )
-
-}
+        { albumTrackList && <TrackList albumCover={track.album.cover_small} tracks={ albumTrackList }/> }
+      </div>
+    )
+  }
 
 export default ViewDetail
