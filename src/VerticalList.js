@@ -1,14 +1,20 @@
-import data from './data.json'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Card from "./Card";
+import axios from "axios";
 
 function VerticalList() {
-  const [tracks, setTracks] = useState(data)
+  const [tracks, setTracks] = useState([])
+
+  if (!tracks.length) {
+    axios.get('https://api.deezer.com/chart/0/tracks?limit=50').then(({ data }) => {
+      setTracks(data.data)
+    })
+  }
 
   return (
-    <div className="grid grid-rows-6 grid-flow-col gap-4">
-      { tracks.map(track => {
-        return <Card id={track.id} cover={track.album.cover} key={track.id} />
+    <div className="flex flex-col space-y-4">
+      { tracks && tracks.map(track => {
+        return <Card id={track.id} cover={track.album.cover} title={track.title} key={track.id} artist={track.artist.picture_small} />
       })}
     </div>
   )
