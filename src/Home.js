@@ -1,9 +1,10 @@
 import './index.css';
+import VerticalList from "./VerticalList";
 
 function Home() {
   return (
     <div className="h-screen">
-      <p className="text-red-500"></p>
+      <VerticalList/>
     </div>
   );
 }
