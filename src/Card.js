@@ -1,8 +1,12 @@
+import {Link} from "react-router-dom";
+
 function Card({ id, cover }) {
   return (
-    <div className="mx-auto">
-      <img src={ cover }/>
-    </div>
+    <Link to={`/${id}`}>
+      <div className="mx-auto">
+        <img src={ cover }/>
+      </div>
+    </Link>
   )
 }
 
