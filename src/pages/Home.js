@@ -19,7 +19,7 @@ function Home() {
 
       dispatch(filter(event.target.value))
     },
-    [setSearchParams]
+    [dispatch, setSearchParams]
   );
 
   return (
