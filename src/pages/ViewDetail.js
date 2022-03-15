@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import TrackList from "../components/TrackList";
 import axios from "axios";
-import trackList from "../components/TrackList";
 
 function ViewDetail() {
   const params = useParams()
@@ -27,7 +26,7 @@ function ViewDetail() {
         }
       })
     }
-  }, [track])
+  }, [track, albumTrackList])
 
   useEffect(() => {
     axios.get(`https://api.deezer.com/track/${params.id}`).then(({data}) => {
@@ -46,12 +45,12 @@ function ViewDetail() {
       { (track && albumTrackList) &&
         <div>
           <div className="flex space-x-5 bg-zinc-900 text-zinc-200 rounded">
-            <img src={track.album.cover_medium}/>
+            <img src={track.album.cover_medium} alt={track.title}/>
             <div className="flex-grow flex flex-col pt-4">
               <h1 className="font-bold text-2xl">{track.title}</h1>
               <div className="flex">
                 <h3 className="text-xl mt-4">{track.artist.name}</h3>
-                <img className="ml-auto rounded-full" src={track.artist.picture_small}/>
+                <img className="ml-auto rounded-full" src={track.artist.picture_small} alt={track.title}/>
               </div>
               <iframe className="mt-auto" title="deezer-widget"
                       src={`https://widget.deezer.com/widget/dark/track/${track.id}`} width="100%"

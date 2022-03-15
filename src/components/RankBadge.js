@@ -2,7 +2,7 @@ import {useState} from "react";
 
 function RankBadge({ rank }) {
 
-  const [ classes, setClasses] = useState('absolute -left-4 -top-4 rounded-full w-12 h-12 p-3 text-zinc-200')
+  const [ classes ] = useState('absolute -left-4 -top-4 rounded-full w-12 h-12 p-3 text-zinc-200')
   const color = [
     '#eab308',
     '#64748b',
