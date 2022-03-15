@@ -1,16 +1,6 @@
-import {useEffect, useState} from "react";
 import Card from "./Card";
-import axios from "axios";
 
-function VerticalList() {
-  const [tracks, setTracks] = useState([])
-
-  if (!tracks.length) {
-    axios.get('https://api.deezer.com/chart/0/tracks?limit=50').then(({ data }) => {
-      setTracks(data.data)
-    })
-  }
-
+function VerticalList({ tracks }) {
   return (
     <div className="flex flex-col space-y-4">
       { tracks && tracks.map(track => {
