@@ -2,37 +2,24 @@ import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import TrackList from "../components/TrackList";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import { current, addToTrackList } from "../slices/tracks";
 
 function ViewDetail() {
   const params = useParams()
-  const [track, setTrack] = useState(null)
-  const [albumTrackList, setAlbumTrackList] = useState([])
-
-  if (!track) {
-    axios.get(`https://api.deezer.com/track/${params.id}`).then(({data}) => {
-      setTrack(data)
-    })
-  }
+  const track = useSelector(state => state.tracks.current)
+  const trackList = useSelector(state => state.tracks.current.tracklist)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!albumTrackList.length) {
-      axios.get(`https://api.deezer.com/album/${track?.album.id}/tracks`).then(({data}) => {
-        if (data.data.length > 1) {
-          setAlbumTrackList(data.data)
-        } else {
-          axios.get(`https://api.deezer.com/artist/${track?.artist.id}/top?limit=15`).then(({data}) => {
-            setAlbumTrackList(data.data)
-          })
-        }
+    axios.get(`https://api.deezer.com/track/${params.id}`).then(({ data }) => {
+      dispatch(current(data))
+
+      axios.get(data.artist.tracklist).then(({ data }) => {
+        dispatch(addToTrackList(data.data))
       })
-    }
-  }, [track, albumTrackList])
-
-  useEffect(() => {
-    axios.get(`https://api.deezer.com/track/${params.id}`).then(({data}) => {
-      setTrack(data)
     })
-  }, [params])
+  }, [dispatch, params])
 
   return (
     <div className="mx-auto">
@@ -42,7 +29,7 @@ function ViewDetail() {
         </svg>
       </Link>
 
-      { (track && albumTrackList) &&
+      { (track.title && trackList) &&
         <div>
           <div className="flex space-x-5 bg-zinc-900 text-zinc-200 rounded">
             <img src={track.album.cover_medium} alt={track.title}/>
@@ -59,7 +46,7 @@ function ViewDetail() {
             </div>
           </div>
           {
-            albumTrackList.length && <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={albumTrackList}/>
+            trackList.length && <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={trackList}/>
 
           }
 

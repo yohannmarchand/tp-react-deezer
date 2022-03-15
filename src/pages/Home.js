@@ -3,27 +3,21 @@ import VerticalList from "../components/VerticalList";
 import SearchBar from "../components/SearchBar";
 import {useCallback, useState} from "react";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import { filter } from "../slices/tracks";
 
 function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(searchParams.get("q") || "");
-  const [tracks, setTracks] = useState([])
-
-  if (!tracks.length) {
-    axios.get('https://api.deezer.com/chart/0/tracks?limit=150').then(({ data }) => {
-      setTracks(data.data)
-    })
-  }
+  const tracks = useSelector(state => state.tracks.value)
+  const dispatch = useDispatch()
 
   const onChange = useCallback(
     (event) => {
       setValue(event.target.value)
       setSearchParams(event.target.value ? { q: event.target.value } : {});
 
-      axios.get('https://api.deezer.com/chart/0/tracks?limit=50').then(({ data }) => {
-        setTracks(data.data.filter(track => track.title.toLowerCase().match(event.target.value.toLowerCase())))
-      })
+      dispatch(filter(event.target.value))
     },
     [setSearchParams]
   );

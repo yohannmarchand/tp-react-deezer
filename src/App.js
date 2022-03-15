@@ -2,8 +2,20 @@ import * as React from "react";
 import {Routes, Route, BrowserRouter} from "react-router-dom";
 import Home from "./pages/Home";
 import ViewDetail from "./pages/ViewDetail";
+import axios from "axios";
+import { fetch } from "./slices/tracks";
+import {useDispatch} from "react-redux";
+import {useEffect} from "react";
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    axios.get('https://api.deezer.com/chart/0/tracks?limit=100').then(({ data }) => {
+      dispatch(fetch(data.data))
+    })
+  }, [dispatch])
+
   return (
     <div>
       <header className="fixed w-full z-50 py-6 bg-zinc-900 text-zinc-200 text-center mx-auto flex items-center justify-center">
