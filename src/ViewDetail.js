@@ -1,8 +1,8 @@
-import data from './data.json'
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import TrackList from "./TrackList";
 import axios from "axios";
+import trackList from "./TrackList";
 
 function ViewDetail() {
   const params = useParams()
@@ -11,7 +11,6 @@ function ViewDetail() {
 
   if (!track) {
     axios.get(`https://api.deezer.com/track/${params.id}`).then(({data}) => {
-      console.log(data)
       setTrack(data)
     })
   }
@@ -30,18 +29,21 @@ function ViewDetail() {
 
   return (
     <div className="py-10 mx-auto px-5">
+      <Link to={"/"}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+      </Link>
+
       { (track && albumTrackList) &&
         <div>
-          <div className="flex space-x-5">
+          <div className="flex space-x-5 bg-zinc-900 text-zinc-200 rounded">
             <img src={track.album.cover_medium}/>
-            <div className="flex-grow flex flex-col">
+            <div className="flex-grow flex flex-col pt-4">
               <h1 className="font-bold text-2xl">{track.title}</h1>
               <div className="flex">
                 <h3 className="text-xl mt-4">{track.artist.name}</h3>
                 <img className="ml-auto rounded-full" src={track.artist.picture_small}/>
-              </div>
-              <div className="w-fit bg-yellow-500 text-zinc-100 px-5 rounded">
-                {track.position}
               </div>
               <iframe className="mt-auto" title="deezer-widget"
                       src={`https://widget.deezer.com/widget/dark/track/${track.id}`} width="100%"
@@ -49,7 +51,10 @@ function ViewDetail() {
                       allow="encrypted-media; clipboard-write"/>
             </div>
           </div>
-          <TrackList albumCover={track.album.cover_small} tracks={albumTrackList}/>
+          {
+            albumTrackList.length > 1 && <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={albumTrackList}/>
+          }
+
         </div>
       }
     </div>
