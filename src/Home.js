@@ -11,7 +11,7 @@ function Home() {
   const [tracks, setTracks] = useState([])
 
   if (!tracks.length) {
-    axios.get('https://api.deezer.com/chart/0/tracks?limit=50').then(({ data }) => {
+    axios.get('https://api.deezer.com/chart/0/tracks?limit=150').then(({ data }) => {
       setTracks(data.data)
     })
   }
