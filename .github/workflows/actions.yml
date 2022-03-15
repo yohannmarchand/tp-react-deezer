@@ -1,4 +1,4 @@
-name: test
+name: build
 on: [push]
 jobs:
   build:
@@ -10,13 +10,4 @@ jobs:
           node-version: '14'
       - run: npm install
       - run: npm run build
-
-  test:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-        - uses: actions/setup-node@v2
-          with:
-            node-version: '14'
-        - run: npm install
-        - run: npm run test
+      - run: npm run test
