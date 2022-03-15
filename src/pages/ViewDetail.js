@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import TrackList from "./TrackList";
+import TrackList from "../components/TrackList";
 import axios from "axios";
-import trackList from "./TrackList";
+import trackList from "../components/TrackList";
 
 function ViewDetail() {
   const params = useParams()

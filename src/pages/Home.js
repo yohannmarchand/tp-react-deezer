@@ -1,6 +1,6 @@
-import './index.css';
-import VerticalList from "./VerticalList";
-import SearchBar from "./SearchBar";
+import '../css/index.css';
+import VerticalList from "../components/VerticalList";
+import SearchBar from "../components/SearchBar";
 import {useCallback, useState} from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
