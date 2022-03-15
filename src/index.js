@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import store from './store'
 import {Provider} from 'react-redux'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import ViewDetail from "./ViewDetail";
 
 ReactDOM.render(
   <React.StrictMode>
