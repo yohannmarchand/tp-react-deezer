@@ -9,8 +9,8 @@ function TrackList({ tracks, albumCover, albumTitle }) {
           tracks.map((track, index) => {
             return <Link to={`/${track.id}`} key={track.id}>
               <div className="flex space-x-5 mt-2">
-                <img className="w-6 h-6" src={ albumCover }/>
-                <p className="text-md hover:underline"><span>{index + 1} -</span> { track.title }</p>
+                <img className="w-6 h-6" src={ track.album?.cover || albumCover }/>
+                <p className="text-md truncate px-2 hover:underline"><span>{index + 1} -</span> { track.title }</p>
               </div>
             </Link>
           })

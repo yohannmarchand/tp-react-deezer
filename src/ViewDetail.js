@@ -60,9 +60,8 @@ function ViewDetail() {
             </div>
           </div>
           {
-            albumTrackList.length > 1
-              ? <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={albumTrackList}/>
-              : <TrackList albumTitle={track.artist.name} albumCover={track.album.cover_small} tracks={albumTrackList}/>
+            albumTrackList.length && <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={albumTrackList}/>
+
           }
 
         </div>
