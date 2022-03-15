@@ -16,9 +16,17 @@ function ViewDetail() {
   }
 
   useEffect(() => {
-    axios.get(`https://api.deezer.com/album/${track?.album.id}/tracks`).then(({data}) => {
-      setAlbumTrackList(data.data)
-    })
+    if (!albumTrackList.length) {
+      axios.get(`https://api.deezer.com/album/${track?.album.id}/tracks`).then(({data}) => {
+        if (data.data.length > 1) {
+          setAlbumTrackList(data.data)
+        } else {
+          axios.get(`https://api.deezer.com/artist/${track?.artist.id}/top?limit=15`).then(({data}) => {
+            setAlbumTrackList(data.data)
+          })
+        }
+      })
+    }
   }, [track])
 
   useEffect(() => {
@@ -52,7 +60,9 @@ function ViewDetail() {
             </div>
           </div>
           {
-            albumTrackList.length > 1 && <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={albumTrackList}/>
+            albumTrackList.length > 1
+              ? <TrackList albumTitle={track.album.title} albumCover={track.album.cover_small} tracks={albumTrackList}/>
+              : <TrackList albumTitle={track.artist.name} albumCover={track.album.cover_small} tracks={albumTrackList}/>
           }
 
         </div>
